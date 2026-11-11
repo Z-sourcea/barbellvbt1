@@ -25,8 +25,8 @@ android.ndk = 28c
 android.accept_sdk_license = True
 android.archs = arm64-v8a
 
-icon.filename = assets/icon.png
-presplash.filename = assets/splash.png
+icon.filename = icon.png
+presplash.filename = splash.png
 presplash_color = #101820
 
 orientation = portrait
