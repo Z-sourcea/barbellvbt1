@@ -1,0 +1,9 @@
+.buildozer/
+.buildozer-global/
+bin/
+__pycache__/
+*.pyc
+*.mp4
+*.avi
+*.mov
+BarbellVBT_*.csv
