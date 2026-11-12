@@ -74,7 +74,14 @@ jobs:
           buildozer --version
 
       - name: Build APK
-        run: buildozer -v android debug
+        shell: bash
+        run: |
+          # IMPORTANT: activate the venv in THIS step too.
+          # Buildozer checks $VIRTUAL_ENV to avoid calling pip with --user.
+          source .venv/bin/activate
+          echo "Using Python: $(which python)"
+          echo "VIRTUAL_ENV=$VIRTUAL_ENV"
+          buildozer -v android debug
 
       - name: Upload APK
         if: success()
