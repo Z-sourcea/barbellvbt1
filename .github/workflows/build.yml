@@ -54,32 +54,34 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.14 for p4a develop
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: '3.14'
 
       - name: Install Rust toolchain
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
-      - name: Install Buildozer
+      - name: Install Buildozer for p4a develop
+        shell: bash
         run: |
           python -m venv .venv
           echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
-          . .venv/bin/activate
+          source .venv/bin/activate
           python -m pip install --upgrade pip setuptools wheel
-          python -m pip install 'Cython<3.0' buildozer
+          # Buildozer 官方对 p4a develop 的安装建议
+          python -m pip install "git+https://github.com/kivy/buildozer"
+          python -m pip install legacy-cgi "Cython==0.29.34"
           buildozer --version
+          python --version
 
       - name: Build APK
         shell: bash
         run: |
-          # IMPORTANT: activate the venv in THIS step too.
-          # Buildozer checks $VIRTUAL_ENV to avoid calling pip with --user.
           source .venv/bin/activate
-          echo "Using Python: $(which python)"
+          echo "Python used by Buildozer: $(python --version)"
           echo "VIRTUAL_ENV=$VIRTUAL_ENV"
           buildozer -v android debug
 
